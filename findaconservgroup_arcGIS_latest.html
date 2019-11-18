@@ -16,8 +16,8 @@
         <!-- <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.0.2/leaflet-pip.js'></script> -->
         <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
-        <script src="proj4.js"></script>
-        <script src="proj4leaflet.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4-src.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
 
         <style>
              #map {
@@ -160,7 +160,7 @@
 
             function findLayer(e){
                 //Determine which layers are selected in toggle friend,regional or both and displaying features in the point based on layers.
-                console.log('e:'+e.latlng);
+                //console.log('e:'+e.latlng);
                 if(map.hasLayer(friendslayer) && map.hasLayer(regionallayer)){
                         selected_features = leafletPip.pointInLayer(e.latlng,friendslayer,false) 
                         selected_features = selected_features.concat(leafletPip.pointInLayer(e.latlng,regionallayer,false))
@@ -245,7 +245,6 @@
                 map.fitBounds(feat.getBounds());
                 
                 var x = popupTemplate([feat])
-                console.log('1: '+x)
                 feat.bindPopup(x).openPopup();
                 feat.unbindPopup(x);
                 
