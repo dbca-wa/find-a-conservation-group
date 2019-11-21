@@ -4,7 +4,9 @@
             <meta charset="utf-8"/>
         <title>Find a Conservation Group</title>
 
-                <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css"
         integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin=""/>
 
@@ -19,17 +21,164 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4-src.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
 
+        <link href="https://fonts.googleapis.com/css?family=Heebo:400,500,700&display=swap" rel="stylesheet">
+
         <style>
+            body {
+            margin:0; 
+            font-family: "Heebo", Arial, Helvetica, sans-serif;
+            }
+
              #map {
 			/* width: 800px; */
 			 height: 100vh;
         
-		} 
+		    } 
             .leaflet-popup-content {
                 max-width: 300px;
                 height: 300px;
                 overflow-y: scroll;
             }
+            .leaflet-bottom.leaflet-left.leaflet-control:not(:empty) {
+                -moz-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+                -webkit-box-shadow: 0 0 2px rgba(0, 0, 0, 0.1);
+                box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+            }
+            .leaflet-bottom.leaflet-left.leaflet-control {
+                margin: 0 0 10px 10px;
+                float: left;
+            }
+            .leaflet-control {
+                border-radius: 4px;
+                overflow: hidden;
+                background: #fff;
+            }
+
+            .leaflet-ctrl-geolocate {
+                width: 30px;
+                height: 30px;
+                display: block;
+                padding: 0;
+                outline: none;
+                border: 0;
+                box-sizing: border-box;
+                background-color: transparent;
+                cursor: pointer;
+            }
+            .leaflet-ctrl-icon.leaflet-ctrl-geolocate {
+                background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg' fill='%23333'%3E %3Cpath d='M10 4C9 4 9 5 9 5L9 5.1A5 5 0 0 0 5.1 9L5 9C5 9 4 9 4 10 4 11 5 11 5 11L5.1 11A5 5 0 0 0 9 14.9L9 15C9 15 9 16 10 16 11 16 11 15 11 15L11 14.9A5 5 0 0 0 14.9 11L15 11C15 11 16 11 16 10 16 9 15 9 15 9L14.9 9A5 5 0 0 0 11 5.1L11 5C11 5 11 4 10 4zM10 6.5A3.5 3.5 0 0 1 13.5 10 3.5 3.5 0 0 1 10 13.5 3.5 3.5 0 0 1 6.5 10 3.5 3.5 0 0 1 10 6.5zM10 8.3A1.8 1.8 0 0 0 8.3 10 1.8 1.8 0 0 0 10 11.8 1.8 1.8 0 0 0 11.8 10 1.8 1.8 0 0 0 10 8.3z'/%3E %3C/svg%3E");
+            }
+            button.leaflet-ctrl-geolocate:hover {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .leaflet-ctrl {
+                clear: both;
+                pointer-events: auto;
+                transform: translate(0, 0);
+            }
+
+            /* Popup box */
+            .leaflet-container {
+                font: 12px/1.5 "Heebo", Arial, Helvetica, sans-serif;
+            }
+            .leaflet-popup-content-wrapper {
+                background: #fff;
+                border-radius: 3px;
+                box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+                padding: 0 0 1px 0;
+                pointer-events: auto;
+
+            }
+            .leaflet-popup-content h3 {
+                background: #4d9de0;
+                color: #fff;
+                display: block;
+                border-radius: 3px 3px 0 0;
+                font-weight: 400;
+                margin: 0;
+                padding: 10px;
+                font-size: 1.6em;
+            }
+
+            .leaflet-popup-content .item {
+                display: block;
+                border-bottom: 1px solid #eee;
+                text-decoration: none;
+                padding: 10px 5px;
+            }
+
+            .leaflet-popup-content {
+                width: 350px;
+                height:auto;
+                max-height: 400px;
+                width:350px !IMPORTANT;
+                padding: 0; 
+                margin:0;   
+                overflow-y: auto;
+            }
+            .popupInfo {
+            overflow-wrap: break-word;
+            }
+            .leaflet-container a.leaflet-popup-close-button:hover {
+                color: #ffd200;
+            }
+            .leaflet-container .btn {
+                display: inline-block;
+                margin-bottom: 0;
+                font-size: 12px;
+                font-weight: 400;
+                line-height: 1.42857143;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: middle;
+                cursor: pointer;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+                background-image: none;
+                border: 1px solid transparent;
+                border-radius: 3px;
+                padding: 3px;
+            }
+            .leaflet-container .btn-default {
+                color: #333;
+                background-color: #fff;
+                border-color: #ccc;
+            }
+
+            .float-right {
+                float: right!important;
+            }
+            .chevron-down {
+            width:15px;
+            height:15px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 448 512'%3E%3Cpath d='M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z'/%3E%3C/svg%3E") no-repeat 0 0;
+
+            }
+
+            .leaflet-container a.leaflet-popup-close-button {
+                position: absolute;
+                top: 0;
+                right: 0;
+                padding: 5px 5px 0 0;
+                border: none;
+                text-align: center;
+                width: 20px;
+                height: 20px;
+                font: 20px/14px Tahoma, Verdana, sans-serif;
+                color: #fff;
+                text-decoration: none;
+                font-weight: bold;
+                background: transparent;
+            }
+
+            .listings {padding:10px;
+            max-height: 300px;
+                overflow-y: auto;
+                margin-bottom: 10px;
+            }
+            .listings .title {font: 400 15px/22px 'Heebo', sans-serif; }
 
         </style>
     </head>
@@ -37,6 +186,13 @@
     <body>
 
         <div id="map"></div>
+
+        <div class="leaflet-bottom leaflet-left">
+            <div class="leaflet-control-zoom leaflet-bar leaflet-control">
+            <button class="leaflet-ctrl-icon leaflet-ctrl-geolocate"></button>
+            </div>
+        </div>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js" type="text/javascript"></script>
 
         <script>
@@ -77,6 +233,19 @@
             }).addTo(map);
 
             //var marker = L.marker([51.5, -0.09]).addTo(mymap);
+
+            $('.leaflet-ctrl-geolocate').on('click', function(){
+                map.locate({setView: true, maxZoom: 15});
+                });
+
+            map.on('locationfound', onLocationFound);
+            function onLocationFound(e) {
+                console.log(e); 
+                // e.heading will contain the user's heading (in degrees) if it's available, and if not it will be NaN. This would allow you to point a marker in the same direction the user is pointed. 
+                L.marker(e.latlng).addTo(map);
+            }
+
+            map.options.minZoom = 6;
 
             map.createPane('labels');
             map.getPane('labels').style.zIndex = 650;
@@ -177,6 +346,52 @@
                 return selected_features;
             }
 
+            // function popupTemplate(selected_features){
+            //     itemsize = selected_features.length;
+            //     html =''; 
+
+            //     if (itemsize)
+            //         {
+
+            //             for (var i = 0; i < itemsize; i++)  { 
+            //                 if(i == 0){
+
+            //                     html += '<button type="button" onclick="closeSelection()">Close Selection </button>';
+            //                 }
+            //                 featureid = selected_features[i].feature.properties.FRIENDS_ID;
+                        
+            //                 (i === 0 )? html += "" : html += "<br>"+"_____" ;
+
+
+            //                 html +=  "<br><a class='zoomIn' onclick='zoomToFeature(selected_features["+i+"])' href='#' ><strong>" + selected_features[i].feature.properties.ORG + "</strong></a>" ;
+                                    
+            //                         (selected_features[i].feature.properties.SITENAME == 'null') ?html+= "<br><b>Sitename:</b> " :
+            //                         html+= "<br><b>Sitename:</b> " + selected_features[i].feature.properties.SITENAME + "";
+
+            //                         (selected_features[i].feature.properties.CONTACT == 'null') ?html+= "<br><b>Contact:</b> " :
+            //                         html+= "<br><b>Contact:</b> " + selected_features[i].feature.properties.CONTACT + "";
+
+            //                         (selected_features[i].feature.properties.PHONE == 'null') ? html+="<br><b>Phone: </b>"  : 
+            //                         html+="<br><b>Phone: </b>" + selected_features[i].feature.properties.PHONE + "";
+
+            //                         (selected_features[i].feature.properties.EMAIL == 'null') ? html+="<br><b>Email: </b>"  : 
+            //                         html+="<br><b>Email: </b><a href='mailto:"+ selected_features[i].feature.properties.EMAIL +"'> " + selected_features[i].feature.properties.EMAIL + "</a>" ;
+                                    
+            //                         (selected_features[i].feature.properties.WEBSITE == 'null') ? html+="<br><b>Website: </b>" : 
+            //                         html+="<br><b>Website: </b><a href=" + selected_features[i].feature.properties.WEBSITE +" target='_blank'> " + selected_features[i].feature.properties.WEBSITE + "</a>" ;
+                                    
+            //                         (selected_features[i].feature.properties.FACEBOOK == 'null') ? html+="<br><b>Facebook: </b>" : 
+            //                         html+="<br><b>Facebook: </b><a href="+ selected_features[i].feature.properties.FACEBOOK + " target='_blank'> " + selected_features[i].feature.properties.FACEBOOK + "</a>" ;
+            //                         //"<br><b>F: </b>" + selected_features[i].feature.properties.f +
+            //                         (selected_features[i].feature.properties.ABOUT == null) ? html+="<br><b>About Us: </b>" : 
+            //                         html+="<br><b>About Us: </b> " + selected_features[i].feature.properties.ABOUT + "" ;
+                                    
+            //             }
+
+            //         }
+            //     return html;
+            // }
+
             function popupTemplate(selected_features){
                 itemsize = selected_features.length;
                 html =''; 
@@ -186,15 +401,15 @@
 
                         for (var i = 0; i < itemsize; i++)  { 
                             if(i == 0){
+                               html += '<h3>Locations</h3><div class="listings">';
 
-                                html += '<button type="button" onclick="closeSelection()">Close Selection </button>';
                             }
                             featureid = selected_features[i].feature.properties.FRIENDS_ID;
                         
-                            (i === 0 )? html += "" : html += "<br>"+"_____" ;
+                            (i === 0 )? html += "" : html += "" ; 
 
 
-                            html +=  "<br><a class='zoomIn' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a>" ;
+                            html +=  "<div class='item' id='item-"+i+"'><a class='zoomIn title' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a><a href='javascript:void(0);' class='btn btn-default btn-arrow float-right' onclick='toggle_visibility(\"friendsOf-"+i+"\");'><div class='chevron-down'></div></a><div class='popupInfo' id='friendsOf-"+i+"' style='display:none;'>" ;
                                     
                                     (selected_features[i].feature.properties.SITENAME == 'null') ?html+= "<br><b>Sitename:</b> " :
                                     html+= "<br><b>Sitename:</b> " + selected_features[i].feature.properties.SITENAME + "";
@@ -214,12 +429,15 @@
                                     (selected_features[i].feature.properties.FACEBOOK == 'null') ? html+="<br><b>Facebook: </b>" : 
                                     html+="<br><b>Facebook: </b><a href="+ selected_features[i].feature.properties.FACEBOOK + " target='_blank'> " + selected_features[i].feature.properties.FACEBOOK + "</a>" ;
                                     //"<br><b>F: </b>" + selected_features[i].feature.properties.f +
-                                    (selected_features[i].feature.properties.ABOUT == 'null') ? html+="<br><b>About Us: </b>" : 
-                                    html+="<br><b>About Us: </b> " + selected_features[i].feature.properties.ABOUT + "" ;
+                                    (selected_features[i].feature.properties.ABOUT == null) ? html+="<br><b>About Us: </b>" : 
+                                    html+="<br><b>About Us: </b> " + selected_features[i].feature.properties.ABOUT + "</div></div>" ;
                                     
                         }
+                             
+                        html +=  "</div>";
 
                     }
+                
                 return html;
             }
 
@@ -261,7 +479,7 @@
             }
 
             var closeSelection = function(){
-                resethighlightStyle(); 
+                resethighlightStyle();
                 map.closePopup();
             }
 
@@ -279,6 +497,17 @@
                 //dashArray: '3',
                 fillOpacity: 0.7
 
+            }
+
+            // Toggle for the popup map
+
+            // Toggle the readmore
+            function toggle_visibility(id) {
+                var e = document.getElementById(id);
+                if (e.style.display == 'block')
+                    e.style.display = 'none';
+                else
+                    e.style.display = 'block';
             }
 
         </script>
