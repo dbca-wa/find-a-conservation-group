@@ -346,52 +346,7 @@
                 return selected_features;
             }
 
-            // function popupTemplate(selected_features){
-            //     itemsize = selected_features.length;
-            //     html =''; 
-
-            //     if (itemsize)
-            //         {
-
-            //             for (var i = 0; i < itemsize; i++)  { 
-            //                 if(i == 0){
-
-            //                     html += '<button type="button" onclick="closeSelection()">Close Selection </button>';
-            //                 }
-            //                 featureid = selected_features[i].feature.properties.FRIENDS_ID;
-                        
-            //                 (i === 0 )? html += "" : html += "<br>"+"_____" ;
-
-
-            //                 html +=  "<br><a class='zoomIn' onclick='zoomToFeature(selected_features["+i+"])' href='#' ><strong>" + selected_features[i].feature.properties.ORG + "</strong></a>" ;
-                                    
-            //                         (selected_features[i].feature.properties.SITENAME == 'null') ?html+= "<br><b>Sitename:</b> " :
-            //                         html+= "<br><b>Sitename:</b> " + selected_features[i].feature.properties.SITENAME + "";
-
-            //                         (selected_features[i].feature.properties.CONTACT == 'null') ?html+= "<br><b>Contact:</b> " :
-            //                         html+= "<br><b>Contact:</b> " + selected_features[i].feature.properties.CONTACT + "";
-
-            //                         (selected_features[i].feature.properties.PHONE == 'null') ? html+="<br><b>Phone: </b>"  : 
-            //                         html+="<br><b>Phone: </b>" + selected_features[i].feature.properties.PHONE + "";
-
-            //                         (selected_features[i].feature.properties.EMAIL == 'null') ? html+="<br><b>Email: </b>"  : 
-            //                         html+="<br><b>Email: </b><a href='mailto:"+ selected_features[i].feature.properties.EMAIL +"'> " + selected_features[i].feature.properties.EMAIL + "</a>" ;
-                                    
-            //                         (selected_features[i].feature.properties.WEBSITE == 'null') ? html+="<br><b>Website: </b>" : 
-            //                         html+="<br><b>Website: </b><a href=" + selected_features[i].feature.properties.WEBSITE +" target='_blank'> " + selected_features[i].feature.properties.WEBSITE + "</a>" ;
-                                    
-            //                         (selected_features[i].feature.properties.FACEBOOK == 'null') ? html+="<br><b>Facebook: </b>" : 
-            //                         html+="<br><b>Facebook: </b><a href="+ selected_features[i].feature.properties.FACEBOOK + " target='_blank'> " + selected_features[i].feature.properties.FACEBOOK + "</a>" ;
-            //                         //"<br><b>F: </b>" + selected_features[i].feature.properties.f +
-            //                         (selected_features[i].feature.properties.ABOUT == null) ? html+="<br><b>About Us: </b>" : 
-            //                         html+="<br><b>About Us: </b> " + selected_features[i].feature.properties.ABOUT + "" ;
-                                    
-            //             }
-
-            //         }
-            //     return html;
-            // }
-
+            //Function to create the popup content and format
             function popupTemplate(selected_features){
                 itemsize = selected_features.length;
                 html =''; 
