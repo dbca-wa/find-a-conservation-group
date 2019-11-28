@@ -349,6 +349,7 @@
             //Function to create the popup content and format
             function popupTemplate(selected_features){
                 itemsize = selected_features.length;
+               
                 html =''; 
 
                 if (itemsize)
@@ -356,14 +357,14 @@
 
                         for (var i = 0; i < itemsize; i++)  { 
                             if(i == 0){
-                               html += '<h3>Locations</h3><div class="listings">';
+                               html += '<h3>Groups</h3><div class="listings">';
 
                             }
                             featureid = selected_features[i].feature.properties.FRIENDS_ID;
                         
                             (i === 0 )? html += "" : html += "" ; 
 
-
+                            
                             html +=  "<div class='item' id='item-"+i+"'><a class='zoomIn title' href='#' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a><a href='javascript:void(0);' class='btn btn-default btn-arrow float-right' onclick='toggle_visibility(\"friendsOf-"+i+"\", selected_features["+i+"]);'><div class='chevron-down'></div></a><div class='popupInfo' id='friendsOf-"+i+"' style='display:none;'>" ;
                                     
                                     (selected_features[i].feature.properties.SITENAME == 'null') ?html+= "<br><b>Sitename:</b> " :
@@ -386,11 +387,14 @@
                                     //"<br><b>F: </b>" + selected_features[i].feature.properties.f +
                                     (selected_features[i].feature.properties.ABOUT == null) ? html+="<br><b>About Us: </b>" : 
                                     html+="<br><b>About Us: </b> " + selected_features[i].feature.properties.ABOUT + "</div></div>" ;
+                            
+                            if( i == 0){
+                                html += "</div>";
+                            }
                                     
                         }
                              
                         html +=  "</div>";
-
                     }
                 
                 return html;
@@ -416,11 +420,9 @@
             function zoomToFeature(feat, id = null) {
                 
                 map.fitBounds(feat.getBounds());
-                console.log(id);
                 
                 if(id == null ){
                     var x = popupTemplate([feat]);
-                    console.log('popup content : '+x);
                     feat.bindPopup(x).openPopup();
                     feat.unbindPopup(x);
                     
@@ -465,11 +467,11 @@
                 var e = document.getElementById(id);
                 if (e.style.display == 'block'){
                     e.style.display = 'none';
-                    console.log('block - none : '+id)
+                    
                 }
                 else {
                     e.style.display = 'block';
-                    console.log('block - show : '+id)
+                    
                     zoomToFeature(feat, id)
                 }
             }
