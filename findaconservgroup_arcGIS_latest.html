@@ -364,7 +364,7 @@
                             (i === 0 )? html += "" : html += "" ; 
 
 
-                            html +=  "<div class='item' id='item-"+i+"'><a class='zoomIn title' href='#' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a><a href='javascript:void(0);' class='btn btn-default btn-arrow float-right' onclick='toggle_visibility(\"friendsOf-"+i+"\");'><div class='chevron-down'></div></a><div class='popupInfo' id='friendsOf-"+i+"' style='display:none;'>" ;
+                            html +=  "<div class='item' id='item-"+i+"'><a class='zoomIn title' href='#' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a><a href='javascript:void(0);' class='btn btn-default btn-arrow float-right' onclick='toggle_visibility(\"friendsOf-"+i+"\", selected_features["+i+"]);'><div class='chevron-down'></div></a><div class='popupInfo' id='friendsOf-"+i+"' style='display:none;'>" ;
                                     
                                     (selected_features[i].feature.properties.SITENAME == 'null') ?html+= "<br><b>Sitename:</b> " :
                                     html+= "<br><b>Sitename:</b> " + selected_features[i].feature.properties.SITENAME + "";
@@ -413,16 +413,20 @@
             }
 
         //Function used to zoom into the feature,highlight it and reset previously selected feature
-            function zoomToFeature(feat) {
+            function zoomToFeature(feat, id = null) {
                 
                 map.fitBounds(feat.getBounds());
+                console.log(id);
                 
-                var x = popupTemplate([feat])
-                feat.bindPopup(x).openPopup();
-                feat.unbindPopup(x);
-                
+                if(id == null ){
+                    var x = popupTemplate([feat]);
+                    console.log('popup content : '+x);
+                    feat.bindPopup(x).openPopup();
+                    feat.unbindPopup(x);
+                    
+                }
                 if (selected) {
-                    console.log(feat)
+                   // console.log(feat)
                     resethighlightStyle()
                 }
                 $('#popup').on('click', resethighlightStyle())
@@ -457,12 +461,17 @@
             // Toggle for the popup map
 
             // Toggle the readmore
-            function toggle_visibility(id) {
+            function toggle_visibility(id, feat) {
                 var e = document.getElementById(id);
-                if (e.style.display == 'block')
+                if (e.style.display == 'block'){
                     e.style.display = 'none';
-                else
+                    console.log('block - none : '+id)
+                }
+                else {
                     e.style.display = 'block';
+                    console.log('block - show : '+id)
+                    zoomToFeature(feat, id)
+                }
             }
 
         </script>
