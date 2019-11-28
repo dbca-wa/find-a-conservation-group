@@ -349,7 +349,7 @@
             //Function to create the popup content and format
             function popupTemplate(selected_features){
                 itemsize = selected_features.length;
-                console.log('no of features: '+itemsize);
+               
                 html =''; 
 
                 if (itemsize)
@@ -395,7 +395,6 @@
                         }
                              
                         html +=  "</div>";
-                        console.log('Elements: '+html);
                     }
                 
                 return html;
@@ -421,7 +420,6 @@
             function zoomToFeature(feat, id = null) {
                 
                 map.fitBounds(feat.getBounds());
-                console.log(id);
                 
                 if(id == null ){
                     var x = popupTemplate([feat]);
