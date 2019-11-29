@@ -365,7 +365,7 @@
                             (i === 0 )? html += "" : html += "" ; 
 
                             
-                            html +=  "<div class='item' id='item-"+i+"'><a class='zoomIn title' href='#' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a><a href='javascript:void(0);' class='btn btn-default btn-arrow float-right' onclick='toggle_visibility(\"friendsOf-"+i+"\", selected_features["+i+"]);'><div class='chevron-down'></div></a><div class='popupInfo' id='friendsOf-"+i+"' style='display:none;'>" ;
+                            html +=  "<div class='item listings' id='item-"+i+"'><a class='zoomIn title' href='#' onclick='zoomToFeature(selected_features["+i+"])' >" + selected_features[i].feature.properties.ORG + "</a><a href='javascript:void(0);' class='btn btn-default btn-arrow float-right' onclick='toggle_visibility(\"friendsOf-"+i+"\", selected_features["+i+"]);'><div class='chevron-down'></div></a><div class='popupInfo' id='friendsOf-"+i+"' style='display:none;'>" ;
                                     
                                     (selected_features[i].feature.properties.SITENAME == 'null') ?html+= "<br><b>Sitename:</b> " :
                                     html+= "<br><b>Sitename:</b> " + selected_features[i].feature.properties.SITENAME + "";
