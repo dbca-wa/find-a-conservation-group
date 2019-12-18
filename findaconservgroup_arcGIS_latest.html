@@ -18,8 +18,8 @@
         <!-- <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.0.2/leaflet-pip.js'></script> -->
         <script src='https://unpkg.com/@mapbox/leaflet-pip@latest/leaflet-pip.js'></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4-src.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script>
+       <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4-src.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4leaflet/1.0.2/proj4leaflet.min.js"></script> -->
 
         <link href="https://fonts.googleapis.com/css?family=Heebo:400,500,700&display=swap" rel="stylesheet">
 
@@ -253,7 +253,7 @@
 
             var friends = [];
 
-            proj4.defs("urn:ogc:def:crs:EPSG::3857", "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
+          //  proj4.defs("urn:ogc:def:crs:EPSG::3857", "+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs");
 
             
             $.ajax({
@@ -264,17 +264,20 @@
 
                 url : 'https://services3.arcgis.com/lSP3CnkTXxMmSpdI/arcgis/rest/services/Friends_Of_Groups/FeatureServer/0/query?where=OBJECTID+%3E+0&f=pgeojson&outfields=ORG%2CSITENAME%2CCONTACT%2CPHONE%2CEMAIL%2CFACEBOOK%2CWEBSITE%2CGROUPTYPE%2CABOUT%2CShape__Area%2CShape__Length%2CShape__Area_2%2CShape__Length_2',
 
+                //url : 'https://services3.arcgis.com/lSP3CnkTXxMmSpdI/arcgis/rest/services/Friends_Of_Groups/FeatureServer/0/query?where=OBJECTID+%3E+0&f=pgeojson&outfields=ORG%2CSITENAME%2CCONTACT%2CPHONE%2CEMAIL%2CFACEBOOK%2CWEBSITE%2CGROUPTYPE%2CABOUT%2CShape__Area%2CShape__Length%2CShape__Area_2%2CShape__Length_2',
+
                 success: function(data) {
                     $(data.features).each(function(key, data) {
                         friends.push(data);
                     })
-                    data['crs'] = {
-                        "type" : "name", 
-                        "properties" : {
-                        "name" : "EPSG:3857"
-                        }
-                    }
-                    geojson_data = data
+                    // data['crs'] = {
+                    //     "type" : "name", 
+                    //     "properties" : {
+                    //     "name" : "EPSG:3857"
+                    //     }
+                    // }
+                    
+                    //geojson_data = data
 
                     var categories = {},GROUPTYPE;
                     
@@ -287,13 +290,23 @@
                         return feature.properties.GROUPTYPE === 'Regional' ;
                     }
 
-                    friendslayer = L.Proj.geoJson(geojson_data, { 
+                    // friendslayer = L.Proj.geoJson(geojson_data, { 
+                    //     style : friendsStyle,
+                    //     filter: friendsfilter
+                    // }).addTo(map);
+
+
+                    // regionallayer = L.Proj.geoJson(geojson_data, { 
+                    //     style : regionalStyle,
+                    //     filter: regionalfilter
+                    // }).addTo(map);
+
+                    friendslayer = L.geoJSON(friends, { 
                         style : friendsStyle,
                         filter: friendsfilter
                     }).addTo(map);
 
-
-                    regionallayer = L.Proj.geoJson(geojson_data, { 
+                    regionallayer = L.geoJSON(friends, { 
                         style : regionalStyle,
                         filter: regionalfilter
                     }).addTo(map);
